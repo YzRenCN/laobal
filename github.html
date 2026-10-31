@@ -278,7 +278,8 @@
         const status = document.getElementById('status');
         const results = document.getElementById('results');
 
-        const MIRROR = 'https://bgithub.xyz';
+        // === 核心修改：替换为 ghproxy 前缀代理 ===
+        const PROXY_PREFIX = 'https://ghproxy.homeboyc.cn/';
 
         async function doSearch() {
             const q = input.value.trim();
@@ -316,17 +317,18 @@
                     const stars = repo.stargazers_count.toLocaleString();
                     const lang = repo.language || '未知';
 
-                    // === 核心修改：优先使用 zipball_url，备用 default_branch 构造 ===
-                    let rawZipUrl = repo.zipball_url; // API 直接提供的下载地址，最可靠
+                    // 1. 获取最原始的 GitHub zip 下载链接
+                    let rawZipUrl = repo.zipball_url; 
                     if (!rawZipUrl) {
                         const branch = repo.default_branch || 'main';
                         rawZipUrl = `https://github.com/${fullName}/archive/refs/heads/${branch}.zip`;
                     }
                     
-                    // 替换域名为镜像地址
-                    const downloadUrl = rawZipUrl.replace('github.com', 'bgithub.xyz');
-                    // 页面浏览地址也替换为镜像
-                    const pageUrl = `https://bgithub.xyz/${fullName}`;
+                    // 2. 拼接 ghproxy 前缀进行加速下载
+                    const downloadUrl = PROXY_PREFIX + rawZipUrl;
+                    
+                    // 3. 仓库浏览页面保持原生 GitHub 链接
+                    const pageUrl = `https://github.com/${fullName}`;
 
                     return `
                         <div class="result-item">
