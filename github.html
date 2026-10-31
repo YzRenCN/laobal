@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LAOBAL Github源码速下工具</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background-color: #FFFFFF;
+            color: #333333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* ========== 顶部（保持原样） ========== */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 50px 10px 50px;
+            border-bottom: 1px solid #333333;
+        }
+
+        .logo-section { display: flex; align-items: center; }
+
+        .icon-link {
+            display: block;
+            width: 60px; height: 60px;
+            margin-right: 10px;
+            background-color: #F0F0F0;
+            text-decoration: none;
+        }
+        .icon-link img { width: 100%; height: 100%; object-fit: contain; display: block; }
+
+        .brand-name {
+            font-size: 32px;
+            font-family: "Times New Roman", Times, serif;
+            letter-spacing: 1px;
+        }
+
+        nav { display: flex; gap: 40px; }
+        nav a {
+            text-decoration: none;
+            color: #333333;
+            font-size: 20px;
+            font-family: "Times New Roman", Times, serif;
+            transition: opacity 0.2s;
+        }
+        nav a:hover { opacity: 0.6; }
+
+        /* ========== 中间搜索区 ========== */
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 40px 50px;
+            max-width: 1000px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 14px 18px;
+            font-size: 17px;
+            border: 1px solid #333333;
+            border-radius: 0;
+            outline: none;
+            background: #FFFFFF;
+            color: #333333;
+            font-family: inherit;
+        }
+
+        .search-box input::placeholder { color: #999999; }
+
+        .search-box button {
+            padding: 14px 28px;
+            font-size: 17px;
+            border: 1px solid #333333;
+            border-radius: 0;
+            background: #333333;
+            color: #FFFFFF;
+            cursor: pointer;
+            font-family: "Times New Roman", Times, serif;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .search-box button:hover {
+            background: #FFFFFF;
+            color: #333333;
+        }
+
+        .status {
+            text-align: center;
+            color: #888888;
+            font-size: 15px;
+            padding: 20px 0;
+        }
+
+        /* 结果列表 */
+        .results {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .result-item {
+            border: 1px solid #DDDDDD;
+            padding: 18px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            transition: border-color 0.2s;
+        }
+
+        .result-item:hover { border-color: #999999; }
+
+        .result-info { flex: 1; min-width: 0; }
+
+        .result-name {
+            font-size: 17px;
+            font-weight: 600;
+            color: #222222;
+            margin-bottom: 4px;
+            word-break: break-all;
+        }
+
+        .result-name a {
+            color: #222222;
+            text-decoration: none;
+        }
+        .result-name a:hover { text-decoration: underline; }
+
+        .result-desc {
+            font-size: 14px;
+            color: #666666;
+            line-height: 1.5;
+            margin-bottom: 6px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .result-meta {
+            font-size: 13px;
+            color: #999999;
+        }
+
+        .result-meta span { margin-right: 16px; }
+
+        .download-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 14px;
+            border: 1px solid #333333;
+            border-radius: 0;
+            background: #FFFFFF;
+            color: #333333;
+            text-decoration: none;
+            white-space: nowrap;
+            font-family: "Times New Roman", Times, serif;
+            transition: background 0.2s, color 0.2s;
+            flex-shrink: 0;
+        }
+
+        .download-btn:hover {
+            background: #333333;
+            color: #FFFFFF;
+        }
+
+        /* ========== 底部（保持原样） ========== */
+        footer {
+            border-top: 1px solid #333333;
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .copyright {
+            font-size: 16px;
+            font-family: "Times New Roman", Times, serif;
+            color: #555555;
+        }
+
+        .footer-links { display: flex; gap: 20px; }
+
+        .footer-link {
+            text-decoration: none;
+            color: #555555;
+            font-size: 16px;
+            font-family: "Times New Roman", Times, serif;
+            transition: opacity 0.2s;
+        }
+        .footer-link:hover { opacity: 0.6; }
+
+        /* ========== 竖屏响应式 ========== */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding: 20px 20px 15px 20px;
+                gap: 15px;
+            }
+            .logo-section { justify-content: center; }
+            .brand-name { font-size: 28px; }
+            nav { width: 100%; justify-content: center; gap: 30px; }
+            nav a { font-size: 18px; }
+
+            main { padding: 25px 18px; }
+
+            .search-box { flex-direction: column; gap: 10px; }
+            .search-box button { width: 100%; padding: 12px; }
+
+            .result-item { flex-direction: column; align-items: stretch; gap: 12px; }
+            .download-btn { text-align: center; padding: 12px; }
+
+            footer {
+                flex-direction: column;
+                padding: 20px;
+                gap: 12px;
+                text-align: center;
+            }
+            .footer-links { justify-content: center; gap: 30px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 顶部 -->
+    <header>
+        <div class="logo-section">
+            <a href="#" class="icon-link">
+                <img src="" alt="图标">
+            </a>
+            <span class="brand-name">LAOBAL Github源码速下工具</span>
+        </div>
+        <nav>
+            <a href="#">关于</a>
+            <a href="#">发现</a>
+            <a href="#">更多</a>
+        </nav>
+    </header>
+
+    <!-- 中间搜索区 -->
+    <main>
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="搜索 GitHub 仓库..." autocomplete="off">
+            <button id="searchBtn">搜索</button>
+        </div>
+        <div class="status" id="status">输入关键词开始搜索</div>
+        <div class="results" id="results"></div>
+    </main>
+
+    <!-- 底部 -->
+    <footer>
+        <span class="copyright">©laobal.top 版权所有</span>
+        <div class="footer-links">
+            <a href="#" class="footer-link">关于</a>
+            <a href="#" class="footer-link">添加</a>
+        </div>
+    </footer>
+
+    <script>
+        const input = document.getElementById('searchInput');
+        const btn = document.getElementById('searchBtn');
+        const status = document.getElementById('status');
+        const results = document.getElementById('results');
+
+        const MIRROR = 'https://bgithub.xyz';
+
+        async function doSearch() {
+            const q = input.value.trim();
+            if (!q) {
+                status.textContent = '请输入搜索关键词';
+                results.innerHTML = '';
+                return;
+            }
+
+            status.textContent = '搜索中...';
+            results.innerHTML = '';
+
+            try {
+                const res = await fetch(
+                    `https://api.github.com/search/repositories?q=${encodeURIComponent(q)}&per_page=20&sort=stars`,
+                    { headers: { 'Accept': 'application/vnd.github+json' } }
+                );
+
+                if (!res.ok) {
+                    throw new Error(res.status === 403 ? '请求频率受限，请稍后重试' : `请求失败 (${res.status})`);
+                }
+
+                const data = await res.json();
+
+                if (!data.items || data.items.length === 0) {
+                    status.textContent = '未找到相关仓库';
+                    return;
+                }
+
+                status.textContent = `找到 ${data.total_count.toLocaleString()} 个仓库，显示前 ${data.items.length} 个`;
+
+                results.innerHTML = data.items.map(repo => {
+                    const fullName = repo.full_name;
+                    const desc = repo.description || '暂无描述';
+                    const stars = repo.stargazers_count.toLocaleString();
+                    const lang = repo.language || '未知';
+                    const branch = repo.default_branch || 'main';
+                    const downloadUrl = `${MIRROR}/${fullName}/archive/refs/heads/${branch}.zip`;
+                    const pageUrl = `${MIRROR}/${fullName}`;
+
+                    return `
+                        <div class="result-item">
+                            <div class="result-info">
+                                <div class="result-name">
+                                    <a href="${pageUrl}" target="_blank" rel="noopener">${fullName}</a>
+                                </div>
+                                <div class="result-desc">${desc}</div>
+                                <div class="result-meta">
+                                    <span>⭐ ${stars}</span>
+                                    <span>${lang}</span>
+                                </div>
+                            </div>
+                            <a class="download-btn" href="${downloadUrl}" target="_blank" rel="noopener">下载源码</a>
+                        </div>
+                    `;
+                }).join('');
+
+            } catch (err) {
+                status.textContent = err.message || '搜索出错，请重试';
+            }
+        }
+
+        btn.addEventListener('click', doSearch);
+        input.addEventListener('keydown', e => {
+            if (e.key === 'Enter') doSearch();
+        });
+    </script>
+
+</body>
+</html>
