@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LAOBAL</title>
+    <style>
+        /* 基础重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: #FFFFFF; 
+            color: #333333;            
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* 顶部导航栏 */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 50px 10px 50px; 
+            border-bottom: 1px solid #333333; 
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+        }
+
+        /* 预留的图片链接位 */
+        .icon-link {
+            display: block;
+            width: 60px;   
+            height: 60px;  
+            margin-right: 10px;
+            background-color: #F0F0F0; 
+            text-decoration: none;
+        }
+
+        .icon-link img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; 
+            display: block;
+        }
+
+        .brand-name {
+            font-size: 32px;
+            font-family: "Times New Roman", Times, serif; 
+            letter-spacing: 1px;
+        }
+
+        /* 顶部右侧导航链接 */
+        nav {
+            display: flex;
+            gap: 40px; 
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #333333; 
+            font-size: 20px;
+            font-family: "Times New Roman", Times, serif;
+            transition: opacity 0.2s;
+        }
+
+        nav a:hover {
+            opacity: 0.6;
+        }
+
+        /* 中间留白区域 */
+        main {
+            flex: 1; 
+        }
+
+        /* 底部区域 */
+        footer {
+            border-top: 1px solid #333333; 
+            padding: 20px 50px;
+            display: flex;               
+            justify-content: space-between; 
+            align-items: center;         
+        }
+
+        .copyright {
+            font-size: 16px;
+            font-family: "Times New Roman", Times, serif;
+            color: #555555; 
+        }
+
+        /* 底部链接容器 */
+        .footer-links {
+            display: flex;
+            align-items: center; 
+            gap: 20px; 
+        }
+
+        .footer-link {
+            text-decoration: none;
+            color: #555555; 
+            font-size: 16px;
+            font-family: "Times New Roman", Times, serif;
+            line-height: 1; 
+            transition: opacity 0.2s;
+        }
+
+        .footer-link:hover {
+            opacity: 0.6;
+        }
+
+        /* ================================================= */
+        /* === 针对竖屏 / 小屏幕（小于768px）的响应式排版 === */
+        /* ================================================= */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding: 20px 20px 15px 20px;
+                gap: 15px; 
+            }
+
+            .logo-section {
+                justify-content: center;
+            }
+
+            .brand-name {
+                font-size: 28px; 
+            }
+
+            nav {
+                width: 100%;
+                justify-content: center;
+                gap: 30px; 
+            }
+
+            nav a {
+                font-size: 18px;
+            }
+
+            footer {
+                flex-direction: column;
+                padding: 20px;
+                gap: 12px; 
+                text-align: center;
+            }
+
+            .footer-links {
+                justify-content: center;
+                gap: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 顶部区域 (默认英文) -->
+    <header>
+        <div class="logo-section">
+            <!-- 图片链接位 -->
+            <a href="#" class="icon-link">
+                <img src="" alt="Icon">
+            </a>
+            
+            <!-- 品牌文字 -->
+            <span class="brand-name">LAOBAL</span>
+        </div>
+
+        <!-- 顶部右侧导航 -->
+        <nav>
+            <a href="#">About</a>
+            <a href="#">Discover</a>
+            <a href="#">More</a>
+        </nav>
+    </header>
+
+    <!-- 中间大面积留白 -->
+    <main></main>
+
+    <!-- 底部区域 -->
+    <footer>
+        <!-- 左侧版权 -->
+        <span class="copyright">©laobal.top All Rights Reserved</span>
+        
+        <!-- 右下角链接区域 -->
+        <div class="footer-links">
+            <a href="https://laobao.top/about/" class="footer-link">About</a>
+            <!-- 这个链接可以保留作为手动切换入口 -->
+            <a href="https://laobao.top/zh/" class="footer-link">中文</a>
+        </div>
+    </footer>
+
+    <!-- === 自动语言跳转脚本 === -->
+    <script>
+        // 立即执行，不要等 DOMContentLoaded，以实现无缝快速跳转
+        (function() {
+            // 获取浏览器首选语言
+            var userLang = navigator.language || navigator.userLanguage;
+            
+            // 判断是否为中文环境（zh-CN 简体, zh-TW/zh-HK 繁体 等）
+            if (userLang.toLowerCase().indexOf('zh') === 0) {
+                // 如果是中文环境，立即重定向
+                // 您可以将 '#' 替换为您实际的中文版网址，例如 'https://laobal.top/zh/'
+                window.location.replace('https://laobao.top/zh/'); 
+            }
+        })();
+    </script>
+</body>
+</html>
