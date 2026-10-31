@@ -315,9 +315,18 @@
                     const desc = repo.description || '暂无描述';
                     const stars = repo.stargazers_count.toLocaleString();
                     const lang = repo.language || '未知';
-                    const branch = repo.default_branch || 'main';
-                    const downloadUrl = `${MIRROR}/${fullName}/archive/refs/heads/${branch}.zip`;
-                    const pageUrl = `${MIRROR}/${fullName}`;
+
+                    // === 核心修改：优先使用 zipball_url，备用 default_branch 构造 ===
+                    let rawZipUrl = repo.zipball_url; // API 直接提供的下载地址，最可靠
+                    if (!rawZipUrl) {
+                        const branch = repo.default_branch || 'main';
+                        rawZipUrl = `https://github.com/${fullName}/archive/refs/heads/${branch}.zip`;
+                    }
+                    
+                    // 替换域名为镜像地址
+                    const downloadUrl = rawZipUrl.replace('github.com', 'bgithub.xyz');
+                    // 页面浏览地址也替换为镜像
+                    const pageUrl = `https://bgithub.xyz/${fullName}`;
 
                     return `
                         <div class="result-item">
